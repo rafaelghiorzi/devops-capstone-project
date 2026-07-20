@@ -135,7 +135,38 @@ class TestAccountService(TestCase):
         self.assertEqual(data["name"], account.name)
 
     def test_read_account_not_found(self):
-        """Read: It should return error status when no account could be read"""
+        """It should return error status when no account could be read"""
         invalid_account_id = 0
         response = self.client.get(f"{BASE_URL}/{invalid_account_id}")
+        self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
+
+    def test_update_an_account(self):
+        """It should update an account"""
+        account = self._create_accounts(1)[0]
+        updated_data = {
+            "name" : "My name!",
+            "email" : "john.doe@mail.com",
+            "address" : "SQS 215"
+        }
+
+        account.deserialize(updated_data)
+        response = self.client.put(
+            f"{BASE_URL}/{account.id}", json=account.serialize()
+        )
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        data = response.get_json()
+        updated_account = Account().deserialize(data)
+
+        updated_account.id = data["id"]
+
+        self.assertEqual(updated_account.id, account.id)
+        self.assertEqual(updated_account.name, account.name)
+        self.assertEqual(updated_account.email, account.email)
+        self.assertEqual(updated_account.address, account.address)
+
+    def test_update_account_not_found(self):
+        """It should return error status when no account could be found"""
+        invalid_account_id = 0
+        updated_data = {}
+        response = self.client.put(f"{BASE_URL}/{invalid_account_id}", json=updated_data)
         self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
