@@ -85,7 +85,7 @@ def get_accounts(account_id):
 # UPDATE AN EXISTING ACCOUNT
 ######################################################################
 
-# ... place you code here to UPDATE an account ...
+
 
 
 ######################################################################
