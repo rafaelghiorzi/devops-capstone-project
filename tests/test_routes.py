@@ -164,35 +164,8 @@ class TestAccountService(TestCase):
         self.assertEqual(updated_account.email, account.email)
         self.assertEqual(updated_account.address, account.address)
 
-
-
-        def test_update_an_account(self):
-        """Update: It should Update an Account"""
-        account = self._create_accounts(1)[0]
-        updated_data = {
-            "name": "Test Update Account",
-            "email": "max.mustermann@gmail.com",
-            "address": "Wishes Street 65",
-            "phone_number": "+45 XXX",
-            "date_joined": "2024-12-15"
-        }
-        account.deserialize(updated_data)
-        response = self.client.put(f"{BASE_URL}/{account.id}", json=account.serialize())
-        self.assertEqual(response.status_code, status.HTTP_200_OK)
-        response_json = response.get_json()
-        updated_account = Account().deserialize(response_json)
-        # Set ID separately because deserialize()
-        # doesn't deserialize ID of account
-        updated_account.id = response_json["id"]
-        self.assertEqual(updated_account.id, account.id)
-        self.assertEqual(updated_account.name, account.name)
-        self.assertEqual(updated_account.email, account.email)
-        self.assertEqual(updated_account.address, account.address)
-        self.assertEqual(updated_account.phone_number, account.phone_number)
-        self.assertEqual(updated_account.date_joined, account.date_joined)
-
     def test_update_account_not_found(self):
-        """Update: It should return error status when no account could be found"""
+        """It should return error status when no account could be found"""
         invalid_account_id = 0
         updated_data = {}
         response = self.client.put(f"{BASE_URL}/{invalid_account_id}", json=updated_data)
