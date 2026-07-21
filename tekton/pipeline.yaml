@@ -1,5 +1,5 @@
 #
-# This pipeline needs the following tasks from Tekton Hub
+# This pipeline needs the following tasks from Tekton Catalog
 #   - git-clone
 #   - flake8
 #
@@ -15,7 +15,6 @@ spec:
     - name: repo-url
     - name: branch
       default: main
-    - name: build-image
   tasks:
     - name: init
       workspaces:
@@ -40,15 +39,14 @@ spec:
 
     - name: lint
       workspaces:
-        - name: source  # Must match defined YAML workspace name of flake8
+        - name: source
           workspace: pipeline-workspace
       taskRef:
         name: flake8
       params:
       - name: image
-        value: python:3.9-slim
+        value: "python:3.9-slim"
       - name: args
-        value: ["--count", "--max-complexity=10", "--max-line-length=127", "--statistics"]
+        value: ["--count","--max-complexity=10","--max-line-length=127","--statistics"]
       runAfter:
         - clone
-
