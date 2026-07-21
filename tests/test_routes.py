@@ -20,7 +20,7 @@ DATABASE_URI = os.getenv(
 
 BASE_URL = "/accounts"
 
-HTTPS_ENVIRON = {'wsgi.url_scheme' : 'https'}
+HTTPS_ENVIRON = {'wsgi.url_scheme': 'https'}
 
 
 ######################################################################
@@ -148,9 +148,9 @@ class TestAccountService(TestCase):
         """It should update an account"""
         account = self._create_accounts(1)[0]
         updated_data = {
-            "name" : "My name!",
-            "email" : "john.doe@mail.com",
-            "address" : "SQS 215"
+            "name": "My name!",
+            "email": "john.doe@mail.com",
+            "address": "SQS 215"
         }
 
         account.deserialize(updated_data)
@@ -175,7 +175,7 @@ class TestAccountService(TestCase):
         response = self.client.put(f"{BASE_URL}/{invalid_account_id}", json=updated_data)
         self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
 
-    def test_delete_an_account(self): 
+    def test_delete_an_account(self):
         """It should delete an account"""
         account = self._create_accounts(1)[0]
 
